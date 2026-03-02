@@ -24,6 +24,7 @@ module "function_app" {
   storage_account_name                   = module.storage_account[each.key].name
   site_config                            = { application_stack = each.value.application_stack }
   virtual_network_subnet_id              = module.virtual_network.subnets["app_service_plan"].resource.id
+  client_certificate_enabled             = true
 
   #System Assigned Identity
   managed_identities = { system_assigned = true }
