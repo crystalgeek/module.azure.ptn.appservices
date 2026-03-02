@@ -28,7 +28,7 @@ locals {
   subnets = {
     app_service_plan = {
       name                              = "${module.naming.subnet.name}-asp"
-      address_prefixes                  = [local.subnet_ranges.0]
+      address_prefixes                  = [local.subnet_ranges[0]]
       private_endpoint_network_policies = "Enabled"
       delegations = [{
         name = "Microsoft.Web.serverFarms"
@@ -40,7 +40,7 @@ locals {
     }
     private_endpoints = {
       name                              = "${module.naming.subnet.name}-pe"
-      address_prefixes                  = [local.subnet_ranges.1]
+      address_prefixes                  = [local.subnet_ranges[1]]
       private_endpoint_network_policies = "Enabled"
       network_security_group            = { id = module.network_security_group.resource_id }
     }
@@ -55,25 +55,25 @@ locals {
   }
   # Private Endpoints
   function_app_private_endpoints = {
-      for key, value in var.function_apps : key => {
-        name                           = "${module.naming.private_endpoint.name}-${value.description}"
-        private_connection_resource_id = module.function_app[key].resource_id
-        subresource_names              = ["sites"]
-        network_interface_name         = "${module.naming.network_interface.name}-${value.description}"
-        private_dns_zone_ids           = ["${module.resource_group.resource_id}/providers/Microsoft.Network/privateDnsZones/privatelink.azurewebsites.net"]
-        private_dns_zone_group_name    = "privatelink.azurewebsites.net"
-      }
+    for key, value in var.function_apps : key => {
+      name                           = "${module.naming.private_endpoint.name}-${value.description}"
+      private_connection_resource_id = module.function_app[key].resource_id
+      subresource_names              = ["sites"]
+      network_interface_name         = "${module.naming.network_interface.name}-${value.description}"
+      private_dns_zone_ids           = ["${module.resource_group.resource_id}/providers/Microsoft.Network/privateDnsZones/privatelink.azurewebsites.net"]
+      private_dns_zone_group_name    = "privatelink.azurewebsites.net"
     }
-    storage_account_private_endpoint_blobs = {
-      for key, value in local.storage_accounts : "stb_${key}" => {
-        name                           = "${module.naming.private_endpoint.name}-blb${value.description}"
-        private_connection_resource_id = module.storage_account[key].resource_id
-        subresource_names              = ["blob"]
-        network_interface_name         = "${module.naming.network_interface.name}-blb${value.description}"
-        private_dns_zone_ids           = ["${module.resource_group.resource_id}/providers/Microsoft.Network/privateDnsZones/privatelink.blob.core.windows.net"]
-        private_dns_zone_group_name    = "privatelink.blob.core.windows.net"
-      }
+  }
+  storage_account_private_endpoint_blobs = {
+    for key, value in local.storage_accounts : "stb_${key}" => {
+      name                           = "${module.naming.private_endpoint.name}-blb${value.description}"
+      private_connection_resource_id = module.storage_account[key].resource_id
+      subresource_names              = ["blob"]
+      network_interface_name         = "${module.naming.network_interface.name}-blb${value.description}"
+      private_dns_zone_ids           = ["${module.resource_group.resource_id}/providers/Microsoft.Network/privateDnsZones/privatelink.blob.core.windows.net"]
+      private_dns_zone_group_name    = "privatelink.blob.core.windows.net"
     }
+  }
   private_endpoints = merge({
     key_vault_private_endpoint = {
       name                           = "${module.naming.private_endpoint.name}-kv"
@@ -82,7 +82,7 @@ locals {
       network_interface_name         = "${module.naming.network_interface.name}-kv"
       private_dns_zone_ids           = ["${module.resource_group.resource_id}/providers/Microsoft.Network/privateDnsZones/privatelink.vaultcore.azure.net"]
       private_dns_zone_group_name    = "privatelink.vaultcore.azure.net"
-    }}, local.function_app_private_endpoints, local.storage_account_private_endpoint_blobs)
+  } }, local.function_app_private_endpoints, local.storage_account_private_endpoint_blobs)
 
 
 
