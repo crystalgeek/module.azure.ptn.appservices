@@ -2,6 +2,8 @@ module "key_vault" {
   source  = "Azure/avm-res-keyvault-vault/azurerm"
   version = "0.10.2"
 
+  tags = local.tags
+
   name                = module.naming.key_vault.name
   location            = var.location
   resource_group_name = module.resource_group.name
@@ -11,7 +13,6 @@ module "key_vault" {
     for key, value in local.client_certs : key => {
       name = "${replace(key, "_", "-")}-client-cert"
     }
-
   }
   secrets_value = local.client_certs
 

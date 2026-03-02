@@ -4,6 +4,8 @@ module "function_app" {
   source   = "Azure/avm-res-web-site/azurerm"
   version  = "0.21.0"
 
+  tags = local.tags
+
   location                 = var.location
   name                     = "${module.naming.function_app.name}-${each.value.description}"
   parent_id                = module.resource_group.resource_id

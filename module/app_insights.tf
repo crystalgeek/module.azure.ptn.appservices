@@ -3,6 +3,8 @@ module "app_insights" {
   source   = "Azure/avm-res-insights-component/azurerm"
   version  = "0.3.0"
 
+  tags = local.tags
+
   name                = module.naming.application_insights.name
   location            = var.location
   resource_group_name = module.resource_group.name

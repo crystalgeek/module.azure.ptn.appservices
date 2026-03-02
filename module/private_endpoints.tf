@@ -3,6 +3,8 @@ module "private_endpoints" {
   source   = "Azure/avm-res-network-privateendpoint/azurerm"
   version  = "0.2.0"
 
+  tags = local.tags
+
   name                           = each.value.name
   location                       = var.location
   resource_group_name            = module.resource_group.name

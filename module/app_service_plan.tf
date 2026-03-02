@@ -2,6 +2,8 @@ module "app_service_plan" {
   source  = "Azure/avm-res-web-serverfarm/azurerm"
   version = "2.0.2"
 
+  tags = local.tags
+
   name      = module.naming.app_service_plan.name
   location  = var.location
   parent_id = module.resource_group.resource_id

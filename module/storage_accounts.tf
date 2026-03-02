@@ -3,6 +3,8 @@ module "storage_account" {
   source   = "Azure/avm-res-storage-storageaccount/azurerm"
   version  = "0.6.7"
 
+  tags = local.tags
+
   name                          = "${module.naming.storage_account.name}${each.value.description}"
   location                      = var.location
   resource_group_name           = module.resource_group.name

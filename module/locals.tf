@@ -89,4 +89,13 @@ locals {
     for key, value in tls_locally_signed_cert.client_cert : key => tls_locally_signed_cert.client_cert[key].cert_pem
   }
 
+  # Resource Tagging
+  tags = merge(
+    #var.tags,
+    {
+      "ManagedBy"   = "Platform-Team"
+      "Pattern"     = "ptn_appservices"
+      "LastUpdated" = timestamp()
+    }
+  )
 }
