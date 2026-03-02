@@ -20,7 +20,7 @@ locals {
   # Storage Accounts
   storage_accounts = merge(local.function_apps, local.logic_apps)
   # App Insights
-  app_insights = merge(var.function_apps, local.logic_apps, local.web_apps)
+  app_insights = merge(var.function_apps)#, var.logic_apps, var.web_apps)
 
   # Networking 
   # Subnets
