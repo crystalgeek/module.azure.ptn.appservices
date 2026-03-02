@@ -6,6 +6,11 @@ variable "suffix" {
 variable "environment" {
   type        = string
   description = "(Required) Environment to deploy for the application stack"
+
+  validation {
+    condition     = contains(["dev", "test", "prod"], var.environment)
+    error_message = "The environment must be one of: dev, test, or prod."
+  }
 }
 
 # Location

@@ -114,7 +114,7 @@ module "ptn_appservices" {
 
   # Naming Standards
   suffix      = random_string.suffix.result
-  environment = "snd"
+  environment = "dev"
 
   # ToDo: Tags
   # tags = { key = "value"}
