@@ -1,8 +1,8 @@
 resource "azurerm_key_vault_certificate" "client_cert" {
 
-  for_each = module.function_app
+  for_each = local.function_apps
 
-  name         = module.function_app.name
+  name         = each.value.description
   key_vault_id = module.key_vault.resource_id
 
   certificate_policy {
