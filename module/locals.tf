@@ -16,11 +16,11 @@ locals {
   # Logic Apps
   logic_apps = {} # Placeholder 
   # Web Apps
-  web_apps = {} # Placeholder
+  web_apps = {} # Placeholder 
   # Storage Accounts
   storage_accounts = merge(local.function_apps, local.logic_apps)
   # App Insights
-  app_insights = merge(var.function_apps)#, var.logic_apps, var.web_apps)
+  app_insights = merge(var.function_apps) #, var.logic_apps, var.web_apps)
 
   # Networking 
   # Subnets
@@ -83,11 +83,6 @@ locals {
       private_dns_zone_ids           = ["${module.resource_group.resource_id}/providers/Microsoft.Network/privateDnsZones/privatelink.vaultcore.azure.net"]
       private_dns_zone_group_name    = "privatelink.vaultcore.azure.net"
   } }, local.function_app_private_endpoints, local.storage_account_private_endpoint_blobs)
-
-  # Client Certificates
-  client_certs = {
-    for key, value in tls_locally_signed_cert.client_cert : key => tls_locally_signed_cert.client_cert[key].cert_pem
-  }
 
   # Resource Tagging
   tags = merge(

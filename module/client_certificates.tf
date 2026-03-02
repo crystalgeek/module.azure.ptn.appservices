@@ -1,28 +1,36 @@
-resource "tls_private_key" "client_key" {
-  algorithm = "RSA"
-  rsa_bits  = 2048
-}
+resource "azurerm_key_vault_certificate" "client_cert" {
 
-resource "tls_cert_request" "client_csr" {
-  for_each        = module.function_app
-  private_key_pem = tls_private_key.client_key.private_key_pem
+  for_each = module.function_app
 
-  subject {
-    common_name  = module.function_app[each.key].resource_uri
-    organization = "Platform Team"
+  name         = module.function_app.name
+  key_vault_id = module.key_vault.resource_id
+
+  certificate_policy {
+    issuer_parameters {
+      name = "Self"
+    }
+
+    key_properties {
+      exportable = true
+      key_type   = "RSA"
+      key_size   = "4096"
+      reuse_key  = false
+    }
+
+    lifetime_action {
+      action {
+        action_type = "AutoRenew"
+      }
+
+      trigger {
+        days_before_expiry = 30
+      }
+    }
+
+    secret_properties {
+      content_type = "application/x-pkcs12"
+    }
   }
-}
 
-resource "tls_locally_signed_cert" "client_cert" {
-  for_each           = module.function_app
-  cert_request_pem   = tls_cert_request.client_csr[each.key].cert_request_pem
-  ca_private_key_pem = tls_private_key.ca_key.private_key_pem
-  ca_cert_pem        = tls_self_signed_cert.ca_cert.cert_pem
-
-  validity_period_hours = 8760 # 1 year
-
-  allowed_uses = [
-    "client_auth",
-    "digital_signature",
-  ]
+  depends_on = [ azurerm_role_assignment.key_vault_administrator ]
 }
