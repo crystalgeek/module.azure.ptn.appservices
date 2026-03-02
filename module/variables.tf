@@ -23,6 +23,11 @@ variable "location" {
 variable "vnet_address_space" {
   type        = string
   description = "(Required) Vnet Address Space"
+
+  validation {
+    condition     = endswith(var.vnet_address_space, "/25")
+    error_message = "This pattern requires a /25 to properly create the App Service and Private Endpoint subnets."
+  }
 }
 
 # App Service Plan
