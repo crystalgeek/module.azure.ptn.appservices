@@ -9,7 +9,7 @@ The following requirements are needed by this module:
 
 - <a name="requirement_azurerm"></a> [azurerm](#requirement\_azurerm) (~> 4.0)
 
-- <a name="requirement_random"></a> [random](#requirement\_random) (>= 3.5.0, < 4.0.0)
+- <a name="requirement_tls"></a> [tls](#requirement\_tls) (4.2.1)
 
 ## Modules
 
@@ -93,6 +93,11 @@ The following resources are used by this module:
 
 - [azurerm_role_assignment.function_key_vault_access](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/role_assignment) (resource)
 - [azurerm_role_assignment.key_vault_administrator](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/role_assignment) (resource)
+- [tls_cert_request.client_csr](https://registry.terraform.io/providers/hashicorp/tls/4.2.1/docs/resources/cert_request) (resource)
+- [tls_locally_signed_cert.client_cert](https://registry.terraform.io/providers/hashicorp/tls/4.2.1/docs/resources/locally_signed_cert) (resource)
+- [tls_private_key.ca_key](https://registry.terraform.io/providers/hashicorp/tls/4.2.1/docs/resources/private_key) (resource)
+- [tls_private_key.client_key](https://registry.terraform.io/providers/hashicorp/tls/4.2.1/docs/resources/private_key) (resource)
+- [tls_self_signed_cert.ca_cert](https://registry.terraform.io/providers/hashicorp/tls/4.2.1/docs/resources/self_signed_cert) (resource)
 - [azurerm_client_config.current](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/data-sources/client_config) (data source)
 
 ## Example
@@ -111,7 +116,7 @@ module "ptn_appservices" {
   suffix      = random_string.suffix.result
   environment = "snd"
 
-  # Tags
+  # ToDo: Tags
   # tags = { key = "value"}
 
   # Module Required Settings

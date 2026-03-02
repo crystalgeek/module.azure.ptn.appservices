@@ -6,4 +6,13 @@ module "key_vault" {
   location            = var.location
   resource_group_name = module.resource_group.name
   tenant_id           = data.azurerm_client_config.current.tenant_id
+
+  secrets = {
+    for key, value in local.client_certs : key => {
+      name = "${replace(key, "_", "-")}-client-cert"
+    }
+
+  }
+  secrets_value = local.client_certs
+
 }
