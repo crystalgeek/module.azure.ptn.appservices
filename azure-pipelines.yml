@@ -1,0 +1,31 @@
+trigger:
+  batch: true
+  branches:
+    include:
+      - main
+      - develop
+
+variables:
+  - name: terraform_version
+    value: "1.9.0"
+
+stages:
+  #---CI
+  - stage: CI
+    pool: "npd"
+    jobs:
+      - job: Terraform_CI
+        steps:
+          - template: terraform-ci.yml@pipeline.terraform
+            parameters:
+              workingDirectory: "./example"
+              terraformVersion: "$(terraform_version)"
+              adoServiceConnection: "$(ado_service_connection)"
+              resourceGroupName: "$(resource_group_name)"
+              storageAccountName: "$(storage_account_name)"
+              containerName: "$(tst_tfstate_container_name)"
+              tfstateKey: "$(tfstate_key)"
+              tenantId: "$(tenant_id)"
+              clientId: "$(client_id)"
+              clientSecret: "$(client_secret)"
+              subscriptionId: "$(subscription_id)"
