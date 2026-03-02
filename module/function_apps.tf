@@ -26,6 +26,6 @@ module "function_app" {
   virtual_network_subnet_id              = module.virtual_network.subnets["app_service_plan"].resource.id
 
   #System Assigned Identity
-  managed_identities = { system_assigned = true}
-  
+  managed_identities = { system_assigned = true }
+
 }
